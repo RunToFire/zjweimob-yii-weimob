@@ -1,7 +1,9 @@
 <?php
+
 	namespace zjweimob\weimob\utils;
 
 	include_once __DIR__ . "/../src/error.wm.php";
+
 	/**
 	 * Class Utils
 	 */
@@ -32,36 +34,36 @@
 		 * @param $var
 		 * @param $name
 		 *
-		 * @throws ParameterError
+		 * @throws WmParameterError
 		 */
 		public static function checkNotEmptyStr ($var, $name)
 		{
 			if (!self::notEmptyStr($var))
-				throw new ParameterError($name . " can not be empty string");
+				throw new WmParameterError($name . " can not be empty string");
 		}
 
 		/**
 		 * @param $var
 		 * @param $name
 		 *
-		 * @throws ParameterError
+		 * @throws WmParameterError
 		 */
 		public static function checkIsUInt ($var, $name)
 		{
 			if (!(is_int($var) && $var >= 0))
-				throw new ParameterError($name . " need unsigned int");
+				throw new WmParameterError($name . " need unsigned int");
 		}
 
 		/**
 		 * @param $var
 		 * @param $name
 		 *
-		 * @throws ParameterError
+		 * @throws WmParameterError
 		 */
 		public static function checkNotEmptyArray ($var, $name)
 		{
 			if (!is_array($var) || count($var) == 0) {
-				throw new ParameterError($name . " can not be empty array");
+				throw new WmParameterError($name . " can not be empty array");
 			}
 		}
 

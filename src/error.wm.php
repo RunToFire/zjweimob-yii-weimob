@@ -1,11 +1,11 @@
 <?php
 	/**
-	 * Class ParameterError
+	 * Class WmParameterError
 	 */
-	class ParameterError extends Exception
+	class WmParameterError extends Exception
 	{
 		/**
-		 * ParameterError constructor.
+		 * WmParameterError constructor.
 		 *
 		 * @inheritDoc
 		 *

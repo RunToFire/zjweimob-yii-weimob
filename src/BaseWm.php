@@ -6,7 +6,7 @@
 	use GuzzleHttp\Client;
 
 	use yii\base\Component;
-
+    use WmParameterError;
 	class BaseWm extends Component
 	{
 		const BASE_URI           = 'https://dopen.weimob.com';
@@ -91,9 +91,22 @@
 			return $this->unwrapResponse($this->getHttpClient()->{$method}($endpoint, $options));
 		}
 
+		/**
+		 * Title 发送请求
+		 * User: ZJ
+		 * Date: 2021/10/12 11:39
+		 *
+		 * @param       $url
+		 * @param       $method
+		 * @param       $params
+		 * @param array $query
+		 *
+		 * @return mixed
+		 * @throws \WmParameterError
+		 */
 		public function _HttpCall ($url, $method, $params, $query = [])
 		{
-			$this->GetAccessToken();
+
 			if (!empty($this->access_token)) {
 				$query = array_merge([
 					'accesstoken' => $this->access_token,
@@ -114,15 +127,15 @@
 					try {
 						$newConfig = $this->GetAccessToken(true);
 					} catch (\Exception $e) {
-						throw new \ParameterError($e->getMessage());
+						throw new WmParameterError($e->getMessage());
 					}
 					if (!empty($newConfig)) {
 						return $this->_HttpCall($url, $method, $params);
 					} else {
-						throw new \ParameterError('请求成功，但未请求到token');
+						throw new WmParameterError('请求成功，但未请求到token');
 					}
 				} else {
-					throw new \ParameterError($result['code']['errcode'] . ':' . $result['code']['errmsg']);
+					throw new WmParameterError($result['code']['errcode'] . ':' . $result['code']['errmsg']);
 				}
 			} else {
 				$this->repJson = $result;

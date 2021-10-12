@@ -3,10 +3,8 @@
 	namespace zjweimob\weimob\src;
 	require_once "error.wm.php";
 
-	use app\components\InvalidDataException;
-	use ParameterError;
+	use WmParameterError;
 	use zjweimob\weimob\utils\Utils;
-	use yii\base\InvalidParamException;
 
 	class Weimob extends BaseWm
 	{
@@ -67,8 +65,7 @@
 		 *
 		 * @return string|void
 		 *
-		 * @throws \ParameterError
-		 * @throws \app\components\InvalidDataException
+		 * @throws \WmParameterError
 		 */
 		public function GetAccessToken ($force = false)
 		{
@@ -85,18 +82,18 @@
 				$this->SetAccessToken($result);
 			}
 
-			return $this->access_token ?? '';
+			return isset($this->access_token) ? $this->access_token : '';
 		}
 
 		/**
 		 * 更新 accesstoken
 		 *
-		 * @throws \ParameterError|\app\components\InvalidDataException
+		 * @throws \WmParameterError
 		 */
 		protected function RefreshAccessToken ()
 		{
 			if (!Utils::notEmptyStr($this->client_secret) || !Utils::notEmptyStr($this->client_id)) {
-				throw new ParameterError("invalid client_secret or client_id");
+				throw new WmParameterError("invalid client_secret or client_id");
 			}
 
 			$params = [
@@ -105,10 +102,10 @@
 				'grant_type'    => 'refresh_token',
 				'refresh_token' => $this->refresh_token,
 			];
-			$this->_HttpCall(self::GET_TOKEN, 'POST',[],$params);
-			
+			$this->_HttpCall(self::GET_TOKEN, 'POST', [], $params);
+
 			if (isset($this->repJson['code']) && $this->repJson['code']['errcode'] == '80001001000119') {
-				throw new InvalidDataException('授权已经过期，请重新授权！');
+				throw new WmParameterError('授权已经过期，请重新授权！');
 			}
 			$time                            = time();
 			$this->repJson['expire']         = $time + $this->repJson["expires_in"];
@@ -124,14 +121,14 @@
 		 *
 		 * @param array $accessToken
 		 *
-		 * @throws InvalidParamException
+		 * @throws \WmParameterError
 		 */
 		public function SetAccessToken (array $accessToken)
 		{
 			if (!isset($accessToken['access_token'])) {
-				throw new InvalidParamException('The work access_token must be set.');
+				throw new WmParameterError('The work access_token must be set.');
 			} elseif (!isset($accessToken['expire'])) {
-				throw new InvalidParamException('Work access_token expire time must be set.');
+				throw new WmParameterError('Work access_token expire time must be set.');
 			}
 			$this->access_token         = $accessToken['access_token'];
 			$this->access_token_expire  = $accessToken['expire'];
@@ -170,7 +167,7 @@
 		 *
 		 * @param $code
 		 *
-		 * @throws \ParameterError
+		 * @throws \WmParameterError
 		 */
 		public function GetAccessTokenByCode ($code)
 		{
@@ -188,11 +185,12 @@
 			return $this->repJson;
 		}
 
-		public function getProductList($params = ['pageSize' => 20, 'startGoodsId' => 0]){
-		
+		public function getProductList ($params = ['pageSize' => 20, 'startGoodsId' => 0])
+		{
+
 			$this->_HttpCall(self::GET_PRODUCT_LIST, 'POST', $params);
+
 			return $this->repJson;
 		}
-
 
 	}
