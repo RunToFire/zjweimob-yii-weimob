@@ -2,8 +2,8 @@
     "name": "zjweimob/yii-weimob",
     "description": "yii2 weimob sdk",
     "type": "yii2-extension",
-    "keywords": ["yii2","extension"],
-    "license": "BSD-4-Clause",
+    "keywords": ["yii2","extension", "weimeng", "weimob", "微盟"],
+    "license": "MIT",
     "authors": [
         {
             "name": "zj",
@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "zjweimob\\weimob\\": "src"
+            "zjweimob\\weimob\\": ""
         }
     }
 }
