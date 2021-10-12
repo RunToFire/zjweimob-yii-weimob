@@ -3,6 +3,7 @@
 	namespace zjweimob\weimob\src;
 	require_once "error.wm.php";
 
+	use app\components\InvalidDataException;
 	use WmParameterError;
 	use zjweimob\weimob\utils\Utils;
 
@@ -185,10 +186,48 @@
 			return $this->repJson;
 		}
 
-		public function getProductList ($params = ['pageSize' => 20, 'startGoodsId' => 0])
+		public function getUrl ($name)
 		{
+			$url = '';
+			switch ($name) {
+				case 'GET_PRODUCT_LIST':
+					$url = self::GET_PRODUCT_LIST;
+					break;
+				case 'GET_PRODUCT_DETAIL':
+					$url = self::GET_PRODUCT_DETAIL;
+					break;
+				case 'GET_COUPON_LIST':
+					$url = self::GET_COUPON_LIST;
+					break;
+				case 'GET_COUPON_DETAIL':
+					$url = self::GET_COUPON_DETAIL;
+					break;
+				default:
+					break;
+			}
 
-			$this->_HttpCall(self::GET_PRODUCT_LIST, 'POST', $params);
+			return $url;
+		}
+
+		/**
+		 * Title 业务接口
+		 * User: ZJ
+		 * Date: 2021/10/12 15:13
+		 *
+		 * @param string $name
+		 * @param array  $params
+		 *
+		 * @return mixed
+		 * @throws \app\components\InvalidDataException
+		 */
+		public function getWeiMobData (string $name, array $params)
+		{
+		
+			try {
+				$this->_HttpCall($this->getUrl($name), 'POST', $params);
+			} catch (WmParameterError $e) {
+				throw new InvalidDataException($e->getMessage());
+			}
 
 			return $this->repJson;
 		}

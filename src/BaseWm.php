@@ -4,17 +4,20 @@
 	require_once "error.wm.php";
 
 	use GuzzleHttp\Client;
-
 	use yii\base\Component;
-    use WmParameterError;
+	use WmParameterError;
+
 	class BaseWm extends Component
 	{
 		const BASE_URI           = 'https://dopen.weimob.com';
 		const GET_CODE           = "/fuwu/b/oauth2/authorize";//授权code获取
 		const GET_TOKEN          = "/fuwu/b/oauth2/token";//获取请求access_token
+		/*业务api*/
 		const GET_PRODUCT_LIST   = '/api/1_0/ec/goods/querySimpleGoodsListWithPage'; //获取商品列表(不限制商品数量)
 		const GET_PRODUCT_DETAIL = '/api/1_0/ec/goods/queryGoodsDetail'; //获取商品详情
 		const GET_ACTIVE_LIST    = '/api/1_0/ec/promotion/queryPromotionList'; //获取活动列表
+		const GET_COUPON_LIST    = '/api/1_0/ec/coupon/getMerchantCouponList'; //优惠列表
+		const GET_COUPON_DETAIL  = '/api/1_0/ec/coupon/getMerchantCouponDetail'; //优惠详情
 
 		protected     $guzzleOptions = [];
 		public        $repJson;
