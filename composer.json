@@ -1,0 +1,21 @@
+{
+    "name": "zjweimob/yii-weimob",
+    "description": "yii2 weimob sdk",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"],
+    "license": "BSD-4-Clause",
+    "authors": [
+        {
+            "name": "zj",
+            "email": "1947115773@qq.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "zjweimob\\weimob\\": "src"
+        }
+    }
+}
