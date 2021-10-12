@@ -123,7 +123,19 @@
 				$body            = json_encode($params);
 				$options['body'] = $body;
 			}
-			$result = $this->httpClient()->request($method, $url, $options);
+			try {
+				$result = $this->httpClient()->request($method, $url, $options);
+			}catch (\Exception $e){
+				preg_match_all("/\{.*?\}/is", $e->getMessage(), $matches);
+				$result = json_decode($matches[0][0],true);
+				if(!empty($result['error_description'])){
+					throw new WmParameterError($result['error_description']);
+				}else if(!empty($result['error'])){
+					throw new WmParameterError($result['error']);
+				}else{
+					throw new WmParameterError($e->getMessage());
+				}
+			}
 			if (isset($result['code']['errcode']) && $result['code']['errcode'] != 0) {
 				if ($result['code']['errcode'] == '80001001000119') {//TOKEN失效
 					//刷新token
