@@ -138,15 +138,15 @@
 		}
 
 		/**
-		 * Title 获取授权跳转地址获取code
+		 * Title 获取授权地址
 		 * User: ZJ
-		 * Date: 2021/10/4 14:15
+		 * Date: 2021/10/12 20:40
 		 *
 		 * @param $state
 		 *
 		 * @return string
 		 */
-		protected function GetOauth2Url ($state = '')
+		public function getAuthUrl ($state)
 		{
 			$params = [
 				'enter'         => 'wm',
@@ -158,7 +158,7 @@
 				'state'         => $state,
 			];
 
-			return self::BASE_URI . self::GET_CODE . '?' . http_build_query($params);
+			return $this->baseUri . '/fuwu/b/oauth2/authorize?' . http_build_query($params);
 		}
 
 		/**
@@ -179,22 +179,58 @@
 				'client_secret' => $this->client_secret,
 				'redirect_uri'  => $this->redirect_uri
 			];
-			$this->_HttpCall(self::GET_TOKEN, 'POST', $params);
+			$this->_HttpCall(self::GET_TOKEN, 'POST', [], $params);
 			$this->repJson['expire'] = time() + $this->repJson["expires_in"];
 			$this->setCache($this->getCacheKey('access_token'), $this->repJson, $this->repJson['expires_in']);
 
 			return $this->repJson;
 		}
 
-		public function getUrl ($name)
+		/**
+		 * Title 获取业务接口地址
+		 * User: ZJ
+		 * Date: 2021/10/12 20:38
+		 *
+		 * @param $name
+		 *
+		 * @return string
+		 */
+		private function getUrl ($name)
 		{
 			$url = '';
 			switch ($name) {
 				case 'GET_PRODUCT_LIST':
 					$url = self::GET_PRODUCT_LIST;
 					break;
+				case 'GET_GUIDE_URL':
+					$url = self::GET_GUIDE_URL;
+					break;
 				case 'GET_PRODUCT_DETAIL':
 					$url = self::GET_PRODUCT_DETAIL;
+					break;
+				case 'GET_ACTIVE_LIST':
+					$url = self::GET_ACTIVE_LIST;
+					break;
+				case 'QUERY_FULL_DISCOUNT_DETAIL':
+					$url = self::QUERY_FULL_DISCOUNT_DETAIL;
+					break;
+				case 'QUERY_DISCOUNT_DETAIL':
+					$url = self::QUERY_DISCOUNT_DETAIL;
+					break;
+				case 'QUERY_NYNJ_DETAIL':
+					$url = self::QUERY_NYNJ_DETAIL;
+					break;
+				case 'QUERY_COMBINATION_DETAIL':
+					$url = self::QUERY_COMBINATION_DETAIL;
+					break;
+				case 'QUERY_REDEMPTION_DETAIL':
+					$url = self::QUERY_REDEMPTION_DETAIL;
+					break;
+				case 'QUERY_GIFTMARKETING_DETAIL':
+					$url = self::QUERY_GIFTMARKETING_DETAIL;
+					break;
+				case 'QUERY_XJXZ_DETAIL':
+					$url = self::QUERY_XJXZ_DETAIL;
 					break;
 				case 'GET_COUPON_LIST':
 					$url = self::GET_COUPON_LIST;
@@ -202,6 +238,30 @@
 				case 'GET_COUPON_DETAIL':
 					$url = self::GET_COUPON_DETAIL;
 					break;
+				case 'QUERY_ORDER_LIST':
+					$url = self::QUERY_ORDER_LIST;
+					break;
+				case 'QUERY_ORDER_DETAIL':
+					$url = self::QUERY_ORDER_DETAIL;
+					break;
+				case 'FIND_GUIDER_LIST':
+					$url = self::FIND_GUIDER_LIST;
+					break;
+				case 'GET_MEMBER_DETAIL':
+					$url = self::GET_MEMBER_DETAIL;
+				case 'GET_USER_INFO':
+					$url = self::GET_USER_INFO;
+					break;
+				case 'GET_SUPER_WID_BY_SOURCE':
+					$url = self::GET_SUPER_WID_BY_SOURCE;
+					break;
+				case 'PAGE_TAG_ATT_LIST':
+					$url = self::PAGE_TAG_ATT_LIST;
+					break;
+				case 'SEND_USER_COUPON':
+					$url = self::SEND_USER_COUPON;
+					break;
+
 				default:
 					break;
 			}
@@ -214,15 +274,14 @@
 		 * User: ZJ
 		 * Date: 2021/10/12 15:13
 		 *
-		 * @param string $name
-		 * @param array  $params
+		 * @param \zjweimob\weimob\src\string $name
+		 * @param array                       $params
 		 *
 		 * @return mixed
-		 * @throws \app\components\InvalidDataException
 		 */
 		public function getWeiMobData (string $name, array $params)
 		{
-		
+
 			try {
 				$this->_HttpCall($this->getUrl($name), 'POST', $params);
 			} catch (WmParameterError $e) {
