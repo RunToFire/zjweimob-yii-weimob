@@ -110,7 +110,6 @@
 			}
 			$time                            = time();
 			$this->repJson['expire']         = $time + $this->repJson["expires_in"];
-			$this->repJson['refresh_expire'] = $time + $this->repJson["refresh_token_expires_in"] * 3600 * 24;
 			$cacheKey                        = $this->getCacheKey('access_token');
 			$this->setCache($cacheKey, $this->repJson, $this->repJson['expires_in']);
 
@@ -134,7 +133,7 @@
 			$this->access_token         = $accessToken['access_token'];
 			$this->access_token_expire  = $accessToken['expire'];
 			$this->refresh_token        = $accessToken['refresh_token'];
-			$this->refresh_token_expire = $accessToken['refresh_expire'];
+
 		}
 
 		/**
@@ -181,6 +180,7 @@
 			];
 			$this->_HttpCall(self::GET_TOKEN, 'POST', [], $params);
 			$this->repJson['expire'] = time() + $this->repJson["expires_in"];
+			
 			$this->setCache($this->getCacheKey('access_token'), $this->repJson, $this->repJson['expires_in']);
 
 			return $this->repJson;

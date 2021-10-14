@@ -60,12 +60,6 @@
 		 */
 		public $refresh_token;
 
-		/**
-		 * 凭证的有效时间
-		 *
-		 * @var string
-		 */
-		public $refresh_token_expire;
 
 		public function httpClient ()
 		{
@@ -166,7 +160,7 @@
 						throw new WmParameterError('请求成功，但未请求到token');
 					}
 				} else {
-					throw new WmParameterError($result['code']['errcode'] . ':' . $result['code']['errmsg']);
+					throw new WmParameterError($result['globalTicket'].":".$result['code']['errcode']. ':' . $result['code']['errmsg']);
 				}
 			} else {
 				$this->repJson = $result;
