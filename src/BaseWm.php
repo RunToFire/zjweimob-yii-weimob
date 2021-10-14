@@ -27,7 +27,7 @@
 		const GET_COUPON_LIST            = '/api/1_0/ec/coupon/getMerchantCouponList'; //优惠券列表
 		const GET_COUPON_DETAIL          = '/api/1_0/ec/coupon/getMerchantCouponDetail'; //优惠券详情
 		const QUERY_ORDER_LIST           = '/api/1_0/ec/order/queryOrderList'; //订单列表
-		const QUERY_ORDER_DETAIL         = '/api/1_0/ec/order/queryOrderDetail'; //订单列表
+		const QUERY_ORDER_DETAIL         = '/api/1_0/ec/order/queryOrderDetail'; //订单详情
 		const FIND_GUIDER_LIST           = '/api/1_0/ec/guide/findGuiderList'; //获取导购列表
 		const GET_MEMBER_DETAIL          = '/api/1_0/mc/member/getMemberDetail'; //会员详情
 		const GET_USER_INFO              = '/api/1_0/uc/user/getUserInfo'; //获取用户信息详情
@@ -141,14 +141,14 @@
 			}
 			try {
 				$result = $this->httpClient()->request($method, $url, $options);
-			}catch (\Exception $e){
+			} catch (\Exception $e) {
 				preg_match_all("/\{.*?\}/is", $e->getMessage(), $matches);
-				$result = json_decode($matches[0][0],true);
-				if(!empty($result['error_description'])){
+				$result = json_decode($matches[0][0], true);
+				if (!empty($result['error_description'])) {
 					throw new WmParameterError($result['error_description']);
-				}else if(!empty($result['error'])){
+				} else if (!empty($result['error'])) {
 					throw new WmParameterError($result['error']);
-				}else{
+				} else {
 					throw new WmParameterError($e->getMessage());
 				}
 			}

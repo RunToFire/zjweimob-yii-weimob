@@ -158,7 +158,7 @@
 				'state'         => $state,
 			];
 
-			return $this->baseUri . '/fuwu/b/oauth2/authorize?' . http_build_query($params);
+			return parent::BASE_URI . '/fuwu/b/oauth2/authorize?' . http_build_query($params);
 		}
 
 		/**
@@ -249,6 +249,7 @@
 					break;
 				case 'GET_MEMBER_DETAIL':
 					$url = self::GET_MEMBER_DETAIL;
+					break;
 				case 'GET_USER_INFO':
 					$url = self::GET_USER_INFO;
 					break;
@@ -274,10 +275,11 @@
 		 * User: ZJ
 		 * Date: 2021/10/12 15:13
 		 *
-		 * @param \zjweimob\weimob\src\string $name
-		 * @param array                       $params
+		 * @param string $name
+		 * @param array  $params
 		 *
 		 * @return mixed
+		 * @throws \app\components\InvalidDataException
 		 */
 		public function getWeiMobData (string $name, array $params)
 		{
