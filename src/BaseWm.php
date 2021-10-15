@@ -33,7 +33,7 @@
 		const GET_USER_INFO              = '/api/1_0/uc/user/getUserInfo'; //获取用户信息详情
 		const GET_SUPER_WID_BY_SOURCE    = '/api/1_0/uc/user/getSuperWidBySource'; //根据unionid获取微盟主wid
 		const PAGE_TAG_ATT_LIST          = '/api/2_0/ec/mbp/pageTagAttListV2'; //获取标签库信息
-		const SEND_USER_COUPON           = '/api/2_0/ec/coupon/sendUserCoupon'; //发送优惠券
+		const SEND_USER_COUPON           = '/api/1_0/ec/coupon/sendUserCoupon'; //发送优惠券
 
 		protected     $guzzleOptions = [];
 		public        $repJson;
@@ -59,7 +59,6 @@
 		 * @var string
 		 */
 		public $refresh_token;
-
 
 		public function httpClient ()
 		{
@@ -160,7 +159,11 @@
 						throw new WmParameterError('请求成功，但未请求到token');
 					}
 				} else {
-					throw new WmParameterError($result['globalTicket'].":".$result['code']['errcode']. ':' . $result['code']['errmsg']);
+					$globalTicket = isset($result['globalTicket']) ? $result['globalTicket'] : '';
+					$err_code     = isset($result['code']['errcode']) ? $result['code']['errcode'] : '';
+					$err_msg      = isset($result['code']['errmsg']) ? $result['code']['errmsg'] : '';
+					$msg          = !empty($err_msg) ? 'globalTicket:' . $globalTicket . ';' . 'err_code:' . $err_code . ';' . 'err_msg:' . $err_msg . ';' : json_encode(['error'=>$result]);
+					throw new WmParameterError($msg);
 				}
 			} else {
 				$this->repJson = $result;

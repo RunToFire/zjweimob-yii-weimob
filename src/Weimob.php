@@ -70,18 +70,14 @@
 		 */
 		public function GetAccessToken ($force = false)
 		{
-			$time = time();
-			if (!Utils::notEmptyStr($this->access_token) || $this->access_token_expire < $time || $force) {
-				$result = !Utils::notEmptyStr($this->access_token) && !$force ? $this->getCache($this->getCacheKey('access_token')) : false;
-				if ($result === false) {
-					$result = $this->RefreshAccessToken();
-				} else {
-					if ($result['expire'] < $time) {
-						$result = $this->RefreshAccessToken();
-					}
-				}
-				$this->SetAccessToken($result);
+
+			$result = $this->getCache($this->getCacheKey('access_token'));
+			if (empty($result) || $force) {
+
+				$result = $this->RefreshAccessToken();
+
 			}
+			$this->SetAccessToken($result);
 
 			return isset($this->access_token) ? $this->access_token : '';
 		}
@@ -108,9 +104,9 @@
 			if (isset($this->repJson['code']) && $this->repJson['code']['errcode'] == '80001001000119') {
 				throw new WmParameterError('授权已经过期，请重新授权！');
 			}
-			$time                            = time();
-			$this->repJson['expire']         = $time + $this->repJson["expires_in"];
-			$cacheKey                        = $this->getCacheKey('access_token');
+			$time                    = time();
+			$this->repJson['expire'] = $time + $this->repJson["expires_in"];
+			$cacheKey                = $this->getCacheKey('access_token');
 			$this->setCache($cacheKey, $this->repJson, $this->repJson['expires_in']);
 
 			return $this->repJson;
@@ -130,9 +126,9 @@
 			} elseif (!isset($accessToken['expire'])) {
 				throw new WmParameterError('Work access_token expire time must be set.');
 			}
-			$this->access_token         = $accessToken['access_token'];
-			$this->access_token_expire  = $accessToken['expire'];
-			$this->refresh_token        = $accessToken['refresh_token'];
+			$this->access_token        = $accessToken['access_token'];
+			$this->access_token_expire = $accessToken['expire'];
+			$this->refresh_token       = $accessToken['refresh_token'];
 
 		}
 
@@ -180,7 +176,7 @@
 			];
 			$this->_HttpCall(self::GET_TOKEN, 'POST', [], $params);
 			$this->repJson['expire'] = time() + $this->repJson["expires_in"];
-			
+
 			$this->setCache($this->getCacheKey('access_token'), $this->repJson, $this->repJson['expires_in']);
 
 			return $this->repJson;
