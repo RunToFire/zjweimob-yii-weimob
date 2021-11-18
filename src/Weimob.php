@@ -258,7 +258,12 @@
 				case 'SEND_USER_COUPON':
 					$url = self::SEND_USER_COUPON;
 					break;
-
+				case 'STORE_LIST':
+					$url = self::STORE_LIST;
+					break;
+				case 'STORE_INFO':
+					$url = self::STORE_INFO;
+					break;
 				default:
 					break;
 			}

@@ -34,6 +34,8 @@
 		const GET_SUPER_WID_BY_SOURCE    = '/api/1_0/uc/user/getSuperWidBySource'; //根据unionid获取微盟主wid
 		const PAGE_TAG_ATT_LIST          = '/api/2_0/ec/mbp/pageTagAttListV2'; //获取标签库信息
 		const SEND_USER_COUPON           = '/api/1_0/ec/coupon/sendUserCoupon'; //发送优惠券
+		const STORE_LIST                 = '/api/1_0/ec/merchant/queryStoreList'; //门店列表
+		const STORE_INFO                 = '/api/1_0/ec/merchant/getStoreInfo'; //门店详情
 
 		protected     $guzzleOptions = [];
 		public        $repJson;
@@ -136,7 +138,9 @@
 				$result = $this->httpClient()->request($method, $url, $options);
 			} catch (\Exception $e) {
 				preg_match_all("/\{.*?\}/is", $e->getMessage(), $matches);
-				$result = json_decode($matches[0][0], true);
+				if (!empty($matches[0][0])) {
+					$result = json_decode($matches[0][0], true);
+				}
 				if (!empty($result['error_description'])) {
 					throw new WmParameterError($result['error_description']);
 				} else if (!empty($result['error'])) {
@@ -162,7 +166,7 @@
 					$globalTicket = isset($result['globalTicket']) ? $result['globalTicket'] : '';
 					$err_code     = isset($result['code']['errcode']) ? $result['code']['errcode'] : '';
 					$err_msg      = isset($result['code']['errmsg']) ? $result['code']['errmsg'] : '';
-					$msg          = !empty($err_msg) ? 'globalTicket:' . $globalTicket . ';' . 'err_code:' . $err_code . ';' . 'err_msg:' . $err_msg . ';' : json_encode(['error'=>$result]);
+					$msg          = !empty($err_msg) ? 'globalTicket:' . $globalTicket . ';' . 'err_code:' . $err_code . ';' . 'err_msg:' . $err_msg . ';' : json_encode(['error' => $result]);
 					throw new WmParameterError($msg);
 				}
 			} else {
