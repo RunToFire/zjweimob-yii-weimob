@@ -264,6 +264,12 @@
 				case 'STORE_INFO':
 					$url = self::STORE_INFO;
 					break;
+				case 'STORE_GOODS':
+					$url = self::STORE_GOODS;
+					break;
+				case 'STORE_AREA':
+					$url = self::STORE_AREA;
+					break;
 				default:
 					break;
 			}
