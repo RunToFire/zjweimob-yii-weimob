@@ -16,6 +16,7 @@
 		const   GET_PRODUCT_LIST           = '/api/1_0/ec/goods/querySimpleGoodsListWithPage'; //获取商品列表(不限制商品数量)
 		const   GET_GUIDE_URL              = '/api/1_0/ec/navigation/pageUrlWithExtendParam'; //获取导购链接
 		const   GET_PRODUCT_DETAIL         = '/api/1_0/ec/goods/queryGoodsDetail'; //获取商品详情
+		const   GET_PRODUCT_STORE_ID       = '/api/1_0/ec/retailGoods/findStoreByGoodsIdWithPage'; //获取商品适用门店分页获取
 		const   GET_ACTIVE_LIST            = '/api/1_0/ec/promotion/queryPromotionList'; //获取活动列表
 		const   QUERY_FULL_DISCOUNT_DETAIL = '/api/1_0/ec/promotion/queryFullDiscountDetail'; //获取活动详情 满减
 		const   QUERY_DISCOUNT_DETAIL      = '/api/1_0/ec/promotion/queryDiscountDetail'; //获取活动详情 折扣

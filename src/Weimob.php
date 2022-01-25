@@ -204,6 +204,9 @@
 				case 'GET_PRODUCT_DETAIL':
 					$url = self::GET_PRODUCT_DETAIL;
 					break;
+				case 'GET_PRODUCT_STORE_ID':
+					$url = self::GET_PRODUCT_STORE_ID;
+					break;
 				case 'GET_ACTIVE_LIST':
 					$url = self::GET_ACTIVE_LIST;
 					break;
